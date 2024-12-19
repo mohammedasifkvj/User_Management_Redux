@@ -1,11 +1,12 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import connectDB from './config/database.js';
-import authRoutes from './routes/authRoutes.js';
-
-import cookieParser from 'cookie-parser';
 import path from 'path';
 import cors from 'cors';
+
+import connectDB from './config/database.js';
+import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/user.route.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -29,15 +30,13 @@ const port = process.env.PORT;
 //   res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
 // });
 
-
-
 app.use(express.json());
 app.use(cookieParser());
 
 app.use(express.urlencoded({extended:true}));
 
 app.use('/api/auth', authRoutes);
-
+app.use('/api/user', userRoutes);
 
 app.get('/',(req,res)=>res.send("server is ready"))
 
