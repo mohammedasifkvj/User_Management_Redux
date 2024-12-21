@@ -4,7 +4,9 @@ import { verifyAdmin } from '../utils/verifyToken.js';
 import {
   adminSignin,
   fetchUsers,
-  createUser
+  createUser,
+  fetchData,
+  editUser
 } from '../controllers/adminController.js';
 
 const router = express.Router();
@@ -17,5 +19,7 @@ const router = express.Router();
 router.post('/signin',adminSignin)
 router.get('/list',verifyAdmin, fetchUsers);
 router.post('/create',verifyAdmin, createUser);
+router.get('/getUser/:id',verifyAdmin, fetchData);
+router.put('/editUser/:id', verifyAdmin, editUser);
 
 export default router;

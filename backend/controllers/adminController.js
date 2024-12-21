@@ -50,3 +50,40 @@ export const createUser = async (req, res, next) => {
     next(error);
   }
 };
+
+//Fetch Users Data for update
+export const fetchData=async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user) {
+    res.status(200).json(user);
+  } else {
+    res.status(404).json({ success: false, message: 'User not found' });
+  }
+};
+
+// update user
+export const editUser = async (req, res, next) => {
+ 
+  try {
+    if (req.body.password) {
+      req.body.password = bcryptjs.hashSync(req.body.password, 10);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: {
+          username: req.body.username,
+          email: req.body.email,
+          password: req.body.password,
+          // profilePicture: req.body.profilePicture,
+        },
+      },
+      { new: true }
+    );
+    const { password, ...rest } = updatedUser._doc;
+    res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+};
