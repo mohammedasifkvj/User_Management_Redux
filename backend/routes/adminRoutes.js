@@ -6,7 +6,8 @@ import {
   fetchUsers,
   createUser,
   fetchData,
-  editUser
+  editUser,
+  deleteUser
 } from '../controllers/adminController.js';
 
 const router = express.Router();
@@ -21,5 +22,6 @@ router.get('/list',verifyAdmin, fetchUsers);
 router.post('/create',verifyAdmin, createUser);
 router.get('/getUser/:id',verifyAdmin, fetchData);
 router.put('/editUser/:id', verifyAdmin, editUser);
+router.delete('/deleteUser/:id', verifyAdmin, deleteUser);
 
 export default router;
