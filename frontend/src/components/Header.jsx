@@ -13,6 +13,20 @@ export default function Header() {
           <Link to='/'>
             <li>Home</li>
           </Link>
+          <Link to='/admin-signIn'>
+            { !currentUser ? (
+              <li>Admin Login</li>
+            ) : (
+              <li></li>
+            )}
+          </Link>
+          <Link to='/list'>
+            {currentUser && currentUser.isAdmin ? (
+              <li>Users List</li>
+            ) : (
+              <li></li>
+            )}
+          </Link>
           <Link to='/profile'>
             {currentUser ? (
               <img src={currentUser.profilePicture} alt='profile' className='h-7 w-7 rounded-full object-cover' />
