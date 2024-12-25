@@ -10,8 +10,6 @@ import Profile from './pages/Profile';
 
 import AdminSignIn from './pages/AdminSignIn';
 import UsersList from './pages/UsersList';
-import CreateUser from './pages/CreateUser';
-import EditUser from './pages/EditUser';
 
 function App() {
   return (
@@ -25,8 +23,6 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path='/profile' element={<Profile />} />
           <Route path='/list' element={<UsersList />} />
-          <Route path='/createUser' element={<CreateUser />} />
-          <Route path='/editUser/:id' element={<EditUser />} />
         </Route>
       </Routes>
     </BrowserRouter>
