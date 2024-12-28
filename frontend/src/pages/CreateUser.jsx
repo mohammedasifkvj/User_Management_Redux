@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import {useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import {
   getDownloadURL,
@@ -13,7 +13,7 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure
-} from '../redux/user/userSlice';
+} from '../redux/admin/adminSlice';
 
 export default function CreateUser() {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ export default function CreateUser() {
   //const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
 
-   const { currentUser, error } = useSelector((state) => state.user);
+  const { currentUser, error } = useSelector((state) => state.user);
   useEffect(() => {
     if (image) {
       handleFileUpload(image);
@@ -158,7 +158,7 @@ export default function CreateUser() {
         />
         {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
         <input
-        //   defaultValue={currentUser.email}
+          //   defaultValue={currentUser.email}
           type='email'
           id='email'
           placeholder='Email'
@@ -175,14 +175,14 @@ export default function CreateUser() {
         />
         {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
 
-<button
+        <button
           disabled={loading || !isFormValid()}
           className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
         >
           {loading ? 'Loading...' : 'Create'}
         </button>
       </form>
-      <p className='text-red-700 mt-5'>{error ? error && 'Something went wrong!': ""}</p>
+      <p className='text-red-700 mt-5'>{error ? error && 'Something went wrong!' : ""}</p>
       <p className='text-green-700 mt-5'>
         {updateSuccess && 'User Created successfully!'}
       </p>

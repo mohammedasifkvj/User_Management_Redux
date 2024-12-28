@@ -8,7 +8,7 @@ import {
   deleteUserStart,
   deleteUserSuccess,
   deleteUserFailure,
-} from '../redux/admin/userSlice';
+} from '../redux/admin/adminSlice';
 
 export default function UsersList() {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ export default function UsersList() {
       dispatch(deleteUserStart());
       await axios.delete(`/api/admin/deleteUser/${userId}`);
       dispatch(deleteUserSuccess(userId));
-       setShowDeletePopup(false);
+      setShowDeletePopup(false);
     } catch (error) {
       dispatch(deleteUserFailure(error));
       console.log('Error deleting user:', error);

@@ -6,7 +6,7 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
-} from '../redux/admin/userSlice';
+} from '../redux/admin/adminSlice';
 
 export default function EditUser() {
   const { id } = useParams(); // Extract the user ID from the URL
