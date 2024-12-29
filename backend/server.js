@@ -17,12 +17,13 @@ connectDB();
 
 const __dirname = path.resolve();
 
+// Enable CORS
 app.use(cors({
-  origin: ['http://127.0.0.1:3000', 'http://localhost:3001'], // Allow both origins
+  origin: ['http://127.0.0.1:8000', 'http://localhost:8001'], // Allow both origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'application/json'],
   credentials: true  // Required for cookies
-}));// Enable CORS
+}));
 
 app.use(express.static(path.join(__dirname, '/client/dist')));
 const port = process.env.PORT;
@@ -34,13 +35,13 @@ const port = process.env.PORT;
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/admin', adminRoutes);
 
-app.get('/',(req,res)=>res.send("server is ready"))
+app.get('/', (req, res) => res.send("server is ready"))
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
