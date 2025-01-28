@@ -27,12 +27,16 @@ export default function Profile() {
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
 
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+
   const { currentUser, loading, error } = useSelector((state) => state.user);
   useEffect(() => {
     if (image) {
       handleFileUpload(image);
     }
   }, [image]);
+
   const handleFileUpload = async (image) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + image.name;
@@ -97,6 +101,12 @@ export default function Profile() {
     } catch (error) {
       dispatch(deleteUserFailure(error));
     }
+  };
+
+  // Show delete popup
+  const confirmDelete = () => {
+    setSelectedUser();
+    setShowDeletePopup(true);
   };
 
   const handleSignOut = async () => {
@@ -172,14 +182,14 @@ export default function Profile() {
         </button>
       </form>
       <div className='flex justify-between mt-5'>
-      {!currentUser.isAdmin ? (  
-        <span
-          onClick={handleDeleteAccount}
-          className='text-red-700 cursor-pointer'
-        >
-          Delete Account
-        </span>
-            ):""}
+        {!currentUser.isAdmin ? (
+          <span
+            onClick={() => confirmDelete()}
+            className='text-red-700 cursor-pointer'
+          >
+            Delete Account
+          </span>
+        ) : ""}
         <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>
           Sign out
         </span>
@@ -188,6 +198,33 @@ export default function Profile() {
       <p className='text-green-700 mt-5'>
         {updateSuccess && 'Profile updated successfully!'}
       </p>
+
+      {/* Delete Confirmation Popup */}
+      {showDeletePopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded shadow-lg w-1/3">
+            <h2 className="text-xl font-bold mb-4 text-center">Delete Account</h2>
+            <p className="text-gray-700 text-center mb-6">
+              Are you sure you want to delete your account ?
+            </p>
+            <div className="flex justify-around">
+              <button
+                onClick={() => setShowDeletePopup(false)}
+                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDeleteAccount(selectedUser)}
+                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
