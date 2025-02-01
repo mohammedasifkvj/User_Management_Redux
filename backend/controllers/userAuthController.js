@@ -1,7 +1,8 @@
-import User from '../models/userModel.js';
-import bcryptjs from 'bcryptjs';
-import { errorHandler } from '../utils/error.js';
 import jwt from 'jsonwebtoken';
+import bcryptjs from 'bcryptjs';
+
+import User from '../models/userModel.js';
+import { errorHandler } from '../utils/error.js';
 
 export const signup = async (req, res, next) => {
     const { username, email, password } = req.body;
@@ -26,7 +27,7 @@ export const signin = async (req, res, next) => {
 
         const token = jwt.sign({ id: validUser._id, role: 'user' }, process.env.JWT_SECRET);
         const { password: hashedPassword, ...rest } = validUser._doc;
-        const expiryDate = new Date(Date.now() + 3600000); // 1 hour
+        const expiryDate = new Date(Date.now() + 3600000); // 10 hour
         res
             .cookie('access_token', token, { httpOnly: true, expires: expiryDate })
             .status(200)
