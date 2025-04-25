@@ -8,6 +8,9 @@ import {
   deleteUserStart,
   deleteUserSuccess,
   deleteUserFailure,
+  showTaskStart,
+  showTaskSuccess,
+  showTaskFailure
 } from '../redux/admin/adminSlice';
 
 export default function UsersList() {
@@ -15,7 +18,10 @@ export default function UsersList() {
   const users = useSelector((state) => state.admin.users);
 
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+
+  const [showTaskPopup, setshowTaskPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [tasks, setTasks] = useState([]); // State to store tasks for selected user
 
   // Fetch users
   useEffect(() => {
@@ -30,6 +36,22 @@ export default function UsersList() {
 
     fetchData();
   }, [dispatch]);
+
+  // fetch tasks and show the popup for the selected user
+  const showTasks = async (user) => {
+    setSelectedUser(user);
+    try {
+      dispatch(showTaskStart());
+      const response = await axios.get(`/api/admin/showTask/${user.id}`);
+      setTasks(response.data.tasks);
+      dispatch(showTaskSuccess(user.id));
+    } catch (error) {
+      dispatch(showTaskFailure(error));
+      console.log('Error fetching tasks:', error);
+      setTasks([]);
+    }
+    setshowTaskPopup(true);
+  };
 
   // Delete user
   const handleDeleteAccount = async (userId) => {
@@ -85,6 +107,16 @@ export default function UsersList() {
                   >
                     Delete
                   </button>
+                  <Link to={`/assignTask/${user.id}`}>
+                    <button className="bg-emerald-500 text-white py-1 px-2 rounded hover:bg-emerald-600">
+                      Assign Task
+                    </button>
+                  </Link>
+                  <button
+                    onClick={() => showTasks(user)}
+                    className="bg-slate-500 text-white py-1 px-2 rounded hover:bg-slate-600">
+                    Show Tasks
+                  </button>
                 </td>
               </tr>
             ))}
@@ -117,6 +149,57 @@ export default function UsersList() {
           </div>
         </div>
       )}
+
+      {/* Task Popup */}
+      {showTaskPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded shadow-lg w-1/3">
+            <h2 className="text-xl font-bold mb-4 text-center">
+              Assigned Tasks for {selectedUser?.name}
+            </h2>
+
+            {tasks && tasks.length > 0 ? (
+              <div className="max-h-80 overflow-y-auto">
+                <ul className="space-y-4">
+                  {tasks.map((task) => (
+                    <li key={task._id} className="p-4 border rounded-lg text-center">
+                      <h3 className="text-lg font-semibold">{task.taskName}</h3>
+                      <p className="text-gray-600">{task.description}</p>
+                      {task.dueTime && (
+                        <p className="text-sm text-gray-500">
+                          Due: {new Date(task.dueTime).toLocaleDateString()}
+                        </p>
+                      )}
+                      {/* Status with color coding */}
+                      <span
+                        className={`inline-block px-3 py-1 text-sm font-semibold text-white rounded-full
+                    ${task.status === 'pending' ? 'bg-yellow-500' : ''}
+                    ${task.status === 'completed' ? 'bg-green-500' : ''}
+                    ${task.status === 'overdue' ? 'bg-red-500' : ''}`}
+                      >
+                        {task.status.charAt(0).toUpperCase() + task.status.slice(1)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <p className="text-gray-500">No tasks assigned.</p>
+            )}
+
+            {/* Close Button */}
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={() => setshowTaskPopup(false)}
+                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

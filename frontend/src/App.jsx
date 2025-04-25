@@ -12,6 +12,8 @@ import AdminSignIn from './pages/AdminSignIn';
 import UsersList from './pages/UsersList';
 import CreateUser from './pages/CreateUser';
 import EditUser from './pages/EditUser';
+import AssignTask from './pages/AssignTask';
+import Tasks from './pages/Tasks';
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
           <Route path='/list' element={<UsersList />} />
           <Route path='/createUser' element={<CreateUser />} />
           <Route path='/editUser/:id' element={<EditUser />} />
+          <Route path='/task' element={<Tasks />} />
+          <Route path='/assignTask/:id' element={<AssignTask />} />
         </Route>
       </Routes>
     </BrowserRouter>
