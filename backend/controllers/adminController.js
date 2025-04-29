@@ -113,7 +113,7 @@ export const assignTask = async (req, res) => {
 }
 };
 
-// Fetch Tasks Assigned for a Student
+// Fetch Tasks Assigned for a User
 export const fetchTask = async (req, res) => {
 try {
   
