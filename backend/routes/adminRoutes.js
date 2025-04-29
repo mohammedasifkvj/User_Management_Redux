@@ -7,7 +7,9 @@ import {
   createUser,
   fetchData,
   editUser,
-  deleteUser
+  deleteUser,
+  assignTask,
+  fetchTask
 } from '../controllers/adminController.js';
 
 const router = express.Router();
@@ -23,5 +25,7 @@ router.post('/create',verifyAdmin, createUser);
 router.get('/getUser/:id',verifyAdmin, fetchData);
 router.put('/editUser/:id', verifyAdmin, editUser);
 router.delete('/deleteUser/:id', verifyAdmin, deleteUser);
+router.post('/assignTask/:id', verifyAdmin, assignTask);
+router.get('/showTask/:id',verifyAdmin, fetchTask);
 
 export default router;

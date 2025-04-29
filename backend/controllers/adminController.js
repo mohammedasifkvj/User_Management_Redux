@@ -2,6 +2,7 @@ import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken'
 
 import User from '../models/userModel.js';
+import Task from '../models/taskModel.js';
 import { errorHandler } from '../utils/error.js';
 
 export const adminSignin = async (req, res, next) => {
@@ -96,3 +97,34 @@ export const deleteUser = async (req, res, next) => {
     next(error);
   }
 }
+
+// Assign task
+export const assignTask = async (req, res) => {
+  console.log("data",req.body);
+  
+  const userId=req.params.id
+  const { taskName, description,dueTime } = req.body;
+  try { 
+   const task = new Task({ userId:userId ,taskName, description:description ,dueTime});
+    await task.save();
+    res.status(201).json({ message: 'Task created successfully' });
+} catch (error) {
+ console.log(error);
+}
+};
+
+// Fetch Tasks Assigned for a Student
+export const fetchTask = async (req, res) => {
+try {
+  
+  const tasks = await Task.find({ userId: req.params.id });
+
+  if (tasks && tasks.length > 0) {
+    res.status(200).json({ success: true, tasks });
+  } else {
+    res.status(404).json({ success: false, message: 'No tasks found for the user' });
+  }
+} catch (error) {
+  res.status(500).json({ success: false, message: error.message });
+}
+};

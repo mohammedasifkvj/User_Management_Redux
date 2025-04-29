@@ -19,7 +19,7 @@ export default function Tasks() {
       useEffect(() => {
         const fetchTasks = async () => {
           try {
-            const res = await axios.get(`/api/student/getTasks/${currentUser._id}`);
+            const res = await axios.get(`/api/user/getTasks/${currentUser._id}`);
             if (res.data.success === false) {
               return;
             }
@@ -37,7 +37,7 @@ export default function Tasks() {
         dispatch(updateTaskStart());
         setLoading(true);
         try {
-          const res = await axios.patch(`/api/student/updateTask/${taskId}`, {
+          const res = await axios.patch(`/api/user/updateTask/${taskId}`, {
             status: 'completed',
           });
 
